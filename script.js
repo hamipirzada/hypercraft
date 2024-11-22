@@ -152,3 +152,51 @@ document.querySelector('.footer-bottom p').innerHTML =
 window.addEventListener('load', () => {
     document.body.classList.add('loaded');
 });
+
+// Testimonials Slider
+const slider = document.querySelector('.testimonials-slider');
+const prevBtn = document.querySelector('.prev-btn');
+const nextBtn = document.querySelector('.next-btn');
+const cards = document.querySelectorAll('.testimonial-card');
+let currentIndex = 0;
+
+// Initialize slider
+function initSlider() {
+    // Set initial position
+    updateSlider();
+    
+    // Add button listeners
+    prevBtn.addEventListener('click', showPrevSlide);
+    nextBtn.addEventListener('click', showNextSlide);
+    
+    // Auto-advance every 5 seconds
+    setInterval(showNextSlide, 5000);
+}
+
+function updateSlider() {
+    const offset = -currentIndex * 100;
+    slider.style.transform = `translateX(${offset}%)`;
+    updateButtons();
+}
+
+function showPrevSlide() {
+    currentIndex = Math.max(currentIndex - 1, 0);
+    updateSlider();
+}
+
+function showNextSlide() {
+    currentIndex = Math.min(currentIndex + 1, cards.length - 1);
+    updateSlider();
+}
+
+function updateButtons() {
+    prevBtn.disabled = currentIndex === 0;
+    nextBtn.disabled = currentIndex === cards.length - 1;
+    
+    // Update button opacity based on state
+    prevBtn.style.opacity = currentIndex === 0 ? '0.5' : '1';
+    nextBtn.style.opacity = currentIndex === cards.length - 1 ? '0.5' : '1';
+}
+
+// Initialize slider when DOM is loaded
+document.addEventListener('DOMContentLoaded', initSlider);
