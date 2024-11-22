@@ -25,6 +25,15 @@ const toggleMenu = () => {
     menuBtn.innerHTML = menuOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
 };
 
+// Close menu
+const closeMenu = () => {
+    if (menuOpen) {
+        menuOpen = false;
+        navLinks.classList.remove('active');
+        menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+    }
+};
+
 // Menu button click handler
 menuBtn.addEventListener('click', (e) => {
     e.stopPropagation();
@@ -34,7 +43,7 @@ menuBtn.addEventListener('click', (e) => {
 // Close menu when clicking outside
 document.addEventListener('click', (e) => {
     if (menuOpen && !e.target.closest('.navbar')) {
-        toggleMenu();
+        closeMenu();
     }
 });
 
@@ -43,12 +52,22 @@ navLinks.addEventListener('click', (e) => {
     e.stopPropagation();
 });
 
-// Close menu when clicking a link
+// Handle navigation link clicks
 document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', () => {
-        if (menuOpen) {
-            setTimeout(toggleMenu, 300); // Delay to allow smooth scrolling to start
-        }
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.querySelector(link.getAttribute('href'));
+        
+        // Close menu first
+        closeMenu();
+        
+        // Then scroll to target
+        setTimeout(() => {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }, 300);
     });
 });
 
@@ -63,7 +82,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         });
         // Close mobile menu if open
         if (window.innerWidth <= 768) {
-            toggleMenu();
+            closeMenu();
         }
     });
 });
