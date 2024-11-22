@@ -10,12 +10,43 @@ window.addEventListener('scroll', function() {
     }
 });
 
-// Mobile menu toggle
+// Mobile menu functionality
 const menuBtn = document.querySelector('.menu-btn');
 const navLinks = document.querySelector('.nav-links');
+let menuOpen = false;
+
+menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
 
 menuBtn.addEventListener('click', () => {
-    navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+    if (!menuOpen) {
+        navLinks.classList.add('active');
+        menuBtn.innerHTML = '<i class="fas fa-times"></i>';
+        menuOpen = true;
+    } else {
+        navLinks.classList.remove('active');
+        menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+        menuOpen = false;
+    }
+});
+
+// Close menu when clicking outside
+document.addEventListener('click', (e) => {
+    if (menuOpen && !e.target.closest('.navbar')) {
+        navLinks.classList.remove('active');
+        menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+        menuOpen = false;
+    }
+});
+
+// Close menu when clicking a link
+document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+        if (menuOpen) {
+            navLinks.classList.remove('active');
+            menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            menuOpen = false;
+        }
+    });
 });
 
 // Smooth scroll for navigation links
@@ -29,7 +60,9 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         });
         // Close mobile menu if open
         if (window.innerWidth <= 768) {
-            navLinks.style.display = 'none';
+            navLinks.classList.remove('active');
+            menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            menuOpen = false;
         }
     });
 });
