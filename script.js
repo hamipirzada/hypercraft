@@ -13,6 +13,7 @@ window.addEventListener('scroll', function() {
 // Mobile menu functionality
 const menuBtn = document.querySelector('.menu-btn');
 const navLinks = document.querySelector('.nav-links');
+const navBrand = document.querySelector('.nav-brand');
 let menuOpen = false;
 
 // Initialize menu button
@@ -38,6 +39,15 @@ const closeMenu = () => {
 menuBtn.addEventListener('click', (e) => {
     e.stopPropagation();
     toggleMenu();
+});
+
+// Logo click handler - scroll to top without toggling menu
+navBrand.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
 });
 
 // Close menu when clicking outside
