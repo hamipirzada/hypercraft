@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Background hexagon -->
+    <path d="M16 2L28 9V23L16 30L4 23V9L16 2Z" fill="#2563eb" fill-opacity="0.9"/>
+    
+    <!-- Inner hexagon -->
+    <path d="M16 6L24 11V21L16 26L8 21V11L16 6Z" fill="#1e40af"/>
+    
+    <!-- Center cube -->
+    <path d="M16 10L21 13.5V20.5L16 24L11 20.5V13.5L16 10Z" fill="#3b82f6"/>
+    
+    <!-- Decorative lines -->
+    <path d="M26 16h3" stroke="#3b82f6" stroke-width="1.5"/>
+    <path d="M3 16h3" stroke="#3b82f6" stroke-width="1.5"/>
+</svg>
