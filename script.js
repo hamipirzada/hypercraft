@@ -15,36 +15,39 @@ const menuBtn = document.querySelector('.menu-btn');
 const navLinks = document.querySelector('.nav-links');
 let menuOpen = false;
 
+// Initialize menu button
 menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
 
-menuBtn.addEventListener('click', () => {
-    if (!menuOpen) {
-        navLinks.classList.add('active');
-        menuBtn.innerHTML = '<i class="fas fa-times"></i>';
-        menuOpen = true;
-    } else {
-        navLinks.classList.remove('active');
-        menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
-        menuOpen = false;
-    }
+// Toggle menu
+const toggleMenu = () => {
+    menuOpen = !menuOpen;
+    navLinks.classList.toggle('active');
+    menuBtn.innerHTML = menuOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+};
+
+// Menu button click handler
+menuBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleMenu();
 });
 
 // Close menu when clicking outside
 document.addEventListener('click', (e) => {
     if (menuOpen && !e.target.closest('.navbar')) {
-        navLinks.classList.remove('active');
-        menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
-        menuOpen = false;
+        toggleMenu();
     }
+});
+
+// Prevent menu close when clicking inside
+navLinks.addEventListener('click', (e) => {
+    e.stopPropagation();
 });
 
 // Close menu when clicking a link
 document.querySelectorAll('.nav-links a').forEach(link => {
     link.addEventListener('click', () => {
         if (menuOpen) {
-            navLinks.classList.remove('active');
-            menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
-            menuOpen = false;
+            setTimeout(toggleMenu, 300); // Delay to allow smooth scrolling to start
         }
     });
 });
@@ -60,9 +63,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         });
         // Close mobile menu if open
         if (window.innerWidth <= 768) {
-            navLinks.classList.remove('active');
-            menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
-            menuOpen = false;
+            toggleMenu();
         }
     });
 });
