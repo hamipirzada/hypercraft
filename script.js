@@ -158,25 +158,52 @@ const slider = document.querySelector('.testimonials-slider');
 const prevBtn = document.querySelector('.prev-btn');
 const nextBtn = document.querySelector('.next-btn');
 const cards = document.querySelectorAll('.testimonial-card');
+const dotsContainer = document.querySelector('.slider-dots');
 let currentIndex = 0;
+let autoSlideInterval;
 
 // Initialize slider
 function initSlider() {
+    // Create dots
+    cards.forEach((_, index) => {
+        const dot = document.createElement('div');
+        dot.classList.add('dot');
+        if (index === 0) dot.classList.add('active');
+        dot.addEventListener('click', () => {
+            currentIndex = index;
+            updateSlider();
+            resetAutoSlide();
+        });
+        dotsContainer.appendChild(dot);
+    });
+    
     // Set initial position
     updateSlider();
     
     // Add button listeners
-    prevBtn.addEventListener('click', showPrevSlide);
-    nextBtn.addEventListener('click', showNextSlide);
+    prevBtn.addEventListener('click', () => {
+        showPrevSlide();
+        resetAutoSlide();
+    });
     
-    // Auto-advance every 5 seconds
-    setInterval(showNextSlide, 5000);
+    nextBtn.addEventListener('click', () => {
+        showNextSlide();
+        resetAutoSlide();
+    });
+    
+    // Start auto-slide
+    startAutoSlide();
+    
+    // Pause auto-slide on hover
+    slider.addEventListener('mouseenter', () => clearInterval(autoSlideInterval));
+    slider.addEventListener('mouseleave', startAutoSlide);
 }
 
 function updateSlider() {
     const offset = -currentIndex * 100;
     slider.style.transform = `translateX(${offset}%)`;
     updateButtons();
+    updateDots();
 }
 
 function showPrevSlide() {
@@ -196,6 +223,29 @@ function updateButtons() {
     // Update button opacity based on state
     prevBtn.style.opacity = currentIndex === 0 ? '0.5' : '1';
     nextBtn.style.opacity = currentIndex === cards.length - 1 ? '0.5' : '1';
+}
+
+function updateDots() {
+    const dots = dotsContainer.querySelectorAll('.dot');
+    dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentIndex);
+    });
+}
+
+function startAutoSlide() {
+    autoSlideInterval = setInterval(() => {
+        if (currentIndex < cards.length - 1) {
+            currentIndex++;
+        } else {
+            currentIndex = 0;
+        }
+        updateSlider();
+    }, 5000);
+}
+
+function resetAutoSlide() {
+    clearInterval(autoSlideInterval);
+    startAutoSlide();
 }
 
 // Initialize slider when DOM is loaded
